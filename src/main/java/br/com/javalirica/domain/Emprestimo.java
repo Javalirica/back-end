@@ -4,25 +4,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
-public class Leitor {
+public class Emprestimo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull
-    private String nome;
-
-    @Email
+    private Livro livro;
     @NotNull
-    private String email;
-    @NotNull
-    private String celular;
-    private List<Emprestimo> livrosAgendados;
+    private Leitor leitor;
+    private LocalDate dataDeEmprestimo;
+    private LocalDate dataDeEntrega;
 }
