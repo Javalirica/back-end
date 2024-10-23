@@ -1,5 +1,6 @@
 package br.com.javalirica.domain;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -8,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 
 import javax.management.relation.Role;
 import java.util.UUID;
-
+@Entity
 public class Gerenciador {
 
     @Id
