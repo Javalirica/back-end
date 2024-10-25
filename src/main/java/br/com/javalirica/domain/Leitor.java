@@ -3,6 +3,8 @@ package br.com.javalirica.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.br.CPF;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,10 @@ public class Leitor {
     @NotNull
     private String nome;
 
+    @CPF(message = "CPF inválido")
+    @NotNull
+    private final String cpf;
+
     @Email
     @NotNull
     private String email;
@@ -26,13 +32,14 @@ public class Leitor {
     @OneToMany(mappedBy = "leitor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Emprestimo> livrosAlugados = new ArrayList<>();
 
-    public Leitor() {
-    }
+    private boolean bloqueado;
 
-    public Leitor(String nome, String email, String celular) {
+    public Leitor(String nome, String cpf, String email, String celular) {
         this.nome = nome;
+        this.cpf = cpf;
         this.email = email;
         this.celular = celular;
+        this.bloqueado = false;
     }
 
     public Long getId() {
@@ -51,6 +58,9 @@ public class Leitor {
         this.nome = nome;
     }
 
+    public String getCpf() {
+        return cpf;
+    }
     public String getEmail() {
         return email;
     }
@@ -75,4 +85,11 @@ public class Leitor {
         this.livrosAlugados = livrosAlugados;
     }
 
+    public boolean isBloqueado() {
+        return bloqueado;
+    }
+
+    public void setBloqueado() {
+        this.bloqueado = true;
+    }
 }

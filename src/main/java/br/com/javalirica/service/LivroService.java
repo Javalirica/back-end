@@ -1,7 +1,6 @@
 package br.com.javalirica.service;
 
 import br.com.javalirica.domain.Livro;
-import br.com.javalirica.dto.LivroDto;
 import br.com.javalirica.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +31,7 @@ public class LivroService {
     }
 
     public Livro adicionarLivro (Livro livro) {
+
         if(livroRepository.findByNome(livro.getNome()).isEmpty()){
             return livroRepository.save(livro);
         } else {
