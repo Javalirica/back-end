@@ -14,20 +14,20 @@ public abstract class GerenciadorBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected  UUID id;
+    private  UUID id;
 
     @NotNull
-    protected  String nome;
+    private  String nome;
 
     @NotNull
-    protected  Roles role;
+    private  Roles role;
 
     @Email
     @NotNull
-    protected  String email;
+    private  String email;
 
     @NotNull
-    protected  String senha;
+    private  String senha;
 
     public GerenciadorBase(String nome, Roles role, String email, String senha) {
         this.nome = nome;
