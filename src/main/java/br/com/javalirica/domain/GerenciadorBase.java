@@ -29,6 +29,9 @@ public abstract class GerenciadorBase {
     @NotNull
     private  String senha;
 
+    public GerenciadorBase() {
+    }
+
     public GerenciadorBase(String nome, Roles role, String email, String senha) {
         this.nome = nome;
         this.role = role;

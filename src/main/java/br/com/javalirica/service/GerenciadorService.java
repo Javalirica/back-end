@@ -3,6 +3,7 @@ package br.com.javalirica.service;
 import br.com.javalirica.domain.AdminGerenciador;
 import br.com.javalirica.domain.GerenciadorBase;
 import br.com.javalirica.domain.SubAdminGerenciador;
+import br.com.javalirica.dto.GerenciadorBaseDTO;
 import br.com.javalirica.enums.Roles;
 import br.com.javalirica.repository.GerenciadorRepository;
 import br.com.javalirica.service.exception.UserAlreadyExistsException;
@@ -20,18 +21,20 @@ public class GerenciadorService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public GerenciadorBase criarGerenciador(String nome,Roles role, String email,String senha) {
-        if (gerenciadorRepository.existsByEmail(email)){
+    public GerenciadorBase criarGerenciador(GerenciadorBaseDTO gerenciadorBase) {
+        if (gerenciadorRepository.existsByEmail(gerenciadorBase.getEmail())){
              throw new UserAlreadyExistsException("Usuário já cadastrado");
         }
-        switch (role) {
+        switch (gerenciadorBase.getRole()) {
             case ADMIN:
 
-                GerenciadorBase gerennciador = new AdminGerenciador(nome, email, passwordEncoder.encode(senha));
+                GerenciadorBase gerennciador = new AdminGerenciador(gerenciadorBase.getNome(),
+                        gerenciadorBase.getEmail(), passwordEncoder.encode(gerenciadorBase.getSenha()));
                 gerenciadorRepository.save(gerennciador);
                 return gerennciador;
             case SUBADMIN:
-                GerenciadorBase gerennciadorSub = new SubAdminGerenciador(nome, email,passwordEncoder.encode(senha));
+                GerenciadorBase gerennciadorSub = new SubAdminGerenciador(gerenciadorBase.getNome(),
+                        gerenciadorBase.getEmail(), passwordEncoder.encode(gerenciadorBase.getSenha()));
                 gerenciadorRepository.save(gerennciadorSub);
                 return  gerennciadorSub;
             default:
