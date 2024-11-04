@@ -6,7 +6,11 @@ import jakarta.persistence.Entity;
 @Entity
 public class SubAdminGerenciador extends GerenciadorBase {
 
-    public SubAdminGerenciador(String nome, String email,String senha) {
+
+    public SubAdminGerenciador() {
+    }
+
+    public SubAdminGerenciador(String nome, String email, String senha) {
         super(nome, Roles.SUBADMIN, email, senha );
     }
 

@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface GerenciadorRepository extends JpaRepository<GerenciadorBase, UUID> {
 
     boolean existsByEmail(String email);
+    GerenciadorBase findByEmail(String email);
 }

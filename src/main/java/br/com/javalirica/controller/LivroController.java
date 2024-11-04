@@ -25,8 +25,8 @@ public class LivroController {
         return ResponseEntity.ok().body(livroService.listarTodos());
     }
 
-    @GetMapping("/name")
-    public ResponseEntity<LivroDto> findByName (@PathVariable String nome){
+    @GetMapping("/nome")
+    public ResponseEntity<LivroDto> findByName (@RequestBody String nome){
         Livro livro = livroService.buscarPorNome(nome);
         LivroDto dto = new LivroDto(livro);
         return ResponseEntity.ok().body(dto);
@@ -39,7 +39,7 @@ public class LivroController {
         return ResponseEntity.created(uri).body(livro);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{name}")
     public ResponseEntity<Void> removerLivro(@PathVariable String nome) {
         livroService.removerLivro(nome);
         return ResponseEntity.noContent().build();
