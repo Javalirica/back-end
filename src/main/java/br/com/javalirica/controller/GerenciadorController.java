@@ -1,5 +1,6 @@
 package br.com.javalirica.controller;
 
+import br.com.javalirica.domain.AdminGerenciador;
 import br.com.javalirica.domain.GerenciadorBase;
 import br.com.javalirica.dto.GerenciadorBaseDTO;
 import br.com.javalirica.service.GerenciadorService;
@@ -18,6 +19,12 @@ public class GerenciadorController {
 
     public GerenciadorController(GerenciadorService gerenciadorService) {
         this.gerenciadorService = gerenciadorService;
+    }
+
+    @PostMapping("/primeiro")
+    public ResponseEntity<?>primeiroAcesso(@RequestBody GerenciadorBaseDTO gerenciador) {
+        GerenciadorBase gerenciadorSalvo = gerenciadorService.primeiroAcesso(gerenciador);
+        return ResponseEntity.status(HttpStatus.CREATED).body(gerenciadorSalvo);
     }
 
     @PostMapping

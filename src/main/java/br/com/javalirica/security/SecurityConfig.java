@@ -52,7 +52,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/auth/**").permitAll()
                             .requestMatchers("/auth").permitAll()
                             .requestMatchers("/users").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/gerenciador").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/gerenciador/primeiro").permitAll()
                             .requestMatchers(HttpMethod.PUT, "/gerenciador/").authenticated()
                             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**", "/h2-console/**").permitAll()
                             .anyRequest().authenticated();
