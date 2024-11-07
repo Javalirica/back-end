@@ -7,10 +7,14 @@ import br.com.javalirica.dto.GerenciadorBaseDTO;
 import br.com.javalirica.enums.Roles;
 import br.com.javalirica.repository.GerenciadorRepository;
 import br.com.javalirica.service.exception.GerenciadorJaExistenteException;
+import br.com.javalirica.service.exception.RoleInvalidaException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class GerenciadorService {
@@ -22,7 +26,7 @@ public class GerenciadorService {
         this.gerenciadorRepository = gerenciadorRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    @Transactional
     public GerenciadorBase primeiroAcesso(GerenciadorBaseDTO admDto){
         List<GerenciadorBase>gerenciadoresAdmin = gerenciadorRepository.findAllByRole(Roles.ADMIN);
         System.out.println(gerenciadoresAdmin);
@@ -37,26 +41,27 @@ public class GerenciadorService {
 
     }
 
+    @Transactional
     public GerenciadorBase criarGerenciador(GerenciadorBaseDTO gerenciadorBase) {
-
-        if (gerenciadorRepository.existsByEmail(gerenciadorBase.getEmail())){
-             throw new GerenciadorJaExistenteException("Usuário já cadastrado");
+        if (gerenciadorRepository.existsByEmail(gerenciadorBase.getEmail())) {
+            throw new GerenciadorJaExistenteException("Usuário já cadastrado");
         }
+
         switch (gerenciadorBase.getRole()) {
             case ADMIN:
-
-                GerenciadorBase gerennciador = new AdminGerenciador(gerenciadorBase.getNome(),
+                GerenciadorBase gerenciadorAdmin = new AdminGerenciador(gerenciadorBase.getNome(),
                         gerenciadorBase.getEmail(), passwordEncoder.encode(gerenciadorBase.getSenha()));
-                gerenciadorRepository.save(gerennciador);
-                return gerennciador;
+                gerenciadorRepository.save(gerenciadorAdmin);
+                return gerenciadorAdmin;
             case SUBADMIN:
-                GerenciadorBase gerennciadorSub = new SubAdminGerenciador(gerenciadorBase.getNome(),
+                GerenciadorBase gerenciadorSub = new SubAdminGerenciador(gerenciadorBase.getNome(),
                         gerenciadorBase.getEmail(), passwordEncoder.encode(gerenciadorBase.getSenha()));
-                gerenciadorRepository.save(gerennciadorSub);
-                return  gerennciadorSub;
+                gerenciadorRepository.save(gerenciadorSub);
+                return gerenciadorSub;
             default:
-                throw new IllegalArgumentException("Role inválida");
+                throw new RoleInvalidaException("Role inválida");
         }
     }
 
-}
+    }
+

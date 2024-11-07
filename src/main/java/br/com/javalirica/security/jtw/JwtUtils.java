@@ -1,5 +1,6 @@
 package br.com.javalirica.security.jtw;
 
+import br.com.javalirica.enums.Roles;
 import br.com.javalirica.service.GerenciadorDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class JwtUtils {
@@ -26,7 +28,7 @@ public class JwtUtils {
 
 		return Jwts.builder()
 				.setSubject(gerenciadorDetails.getUsername())
-				.claim("gerenciadorRole", gerenciadorDetails.getRole())
+				.claim("gerenciadorRole", gerenciadorDetails.getRole().name())
 				.setIssuedAt(now)
 				.setExpiration(expiryDate)
 				.signWith(getSigninKey(), SignatureAlgorithm.HS512)
@@ -43,10 +45,20 @@ public class JwtUtils {
 		return Jwts.parser().setSigningKey(getSigninKey()).build()
 				.parseClaimsJws(token).getBody().getSubject();
 	}
-	public Long getUserIdFromToken(String token) {
+	public UUID getUserIdFromToken(String token) {
 		return Jwts.parser().setSigningKey(getSigninKey()).build()
-				.parseClaimsJws(token).getBody().get("userId", Long.class);
+				.parseClaimsJws(token).getBody().get("userId", UUID.class);
 	}
+	public Roles getGerenciadorRoleFromToken(String token) {
+		Claims claims = Jwts.parser()
+				.setSigningKey(getSigninKey())
+				.build()
+				.parseClaimsJws(token)
+				.getBody();
+		String roleString = claims.get("gerenciadorRole", String.class); // Atualize para "gerenciadorRole"
+		return Roles.valueOf(roleString);
+	}
+
 
 	public boolean validateJwtToken(String authToken) {
 		try {
