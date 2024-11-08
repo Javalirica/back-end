@@ -1,10 +1,15 @@
 package br.com.javalirica.service;
 
 import br.com.javalirica.domain.Livro;
+import br.com.javalirica.dto.LivroDto;
 import br.com.javalirica.repository.LivroRepository;
+import br.com.javalirica.service.exception.DataBaseException;
+import br.com.javalirica.service.exception.LivroInvalidoException;
 import br.com.javalirica.service.exception.LivroNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,21 +35,32 @@ public class LivroService {
         return livros.isEmpty() ? Collections.emptyList() : livros;
     }
 
-//    public Livro adicionarLivro (Livro livro) {
-//
-//        if(livroRepository.findByNome(livro.getNome()).isEmpty()){
-//            return livroRepository.save(livro);
-//        } else {
-//            // lançar exceção -todo
-//        }
-//        return null;
-//    }
+    @Transactional
+    public LivroDto adicionarLivro (Livro livro) {
 
+        if (livro == null){
+            throw new LivroInvalidoException("O livro não pode ser nulo");
+        }
+        try {
+             livroRepository.save(livro);
+            return new LivroDto(livro);
+
+        } catch (Exception e) {
+            throw  new DataBaseException("Erro ao salvar o livro no banco de dados");
+        }
+
+    }
+
+    @Transactional
     public void removerLivro (Long id){
         if (id == null) {
-            throw new NullPointerException("O ID do livro não pode ser nulo");
+            throw new LivroInvalidoException("O ID do livro não pode ser nulo");
         }
-        Livro livro = livroRepository.findById(id).orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado pelo id: " + id));
-        livroRepository.deleteById(livro.getId());
+        try {
+            Livro livro = livroRepository.findById(id).orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado pelo id: " + id));
+            livroRepository.deleteById(livro.getId());
+        } catch (DataIntegrityViolationException e ) {
+            throw new DataBaseException("Erro ao excluir Livro");
+        }
     }
 }

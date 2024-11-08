@@ -35,13 +35,13 @@ public class LivroController {
         return ResponseEntity.ok().body(livrosDto);
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
-//    @PostMapping
-//    public ResponseEntity<Livro> adicionarLivro(@RequestBody Livro livro) {
-//        livroService.adicionarLivro(livro);
-//        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(livro.getId()).toUri();
-//        return ResponseEntity.created(uri).body(livro);
-//    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
+    public ResponseEntity<Livro> adicionarLivro(@RequestBody Livro livro) {
+        livroService.adicionarLivro(livro);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(livro.getId()).toUri();
+        return ResponseEntity.created(uri).body(livro);
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")

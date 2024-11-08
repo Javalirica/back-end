@@ -6,6 +6,7 @@ import br.com.javalirica.domain.SubAdminGerenciador;
 import br.com.javalirica.dto.GerenciadorBaseDTO;
 import br.com.javalirica.enums.Roles;
 import br.com.javalirica.repository.GerenciadorRepository;
+import br.com.javalirica.service.exception.DataBaseException;
 import br.com.javalirica.service.exception.GerenciadorJaExistenteException;
 import br.com.javalirica.service.exception.RoleInvalidaException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,16 +28,20 @@ public class GerenciadorService {
         this.passwordEncoder = passwordEncoder;
     }
     @Transactional
-    public GerenciadorBase primeiroAcesso(GerenciadorBaseDTO admDto){
+    public GerenciadorBase primeiroAcesso(GerenciadorBaseDTO admDto) throws DataBaseException {
         List<GerenciadorBase>gerenciadoresAdmin = gerenciadorRepository.findAllByRole(Roles.ADMIN);
 
-        if (gerenciadoresAdmin.isEmpty()) {
-            GerenciadorBase adm =  new AdminGerenciador(admDto.getNome(),
-                    admDto.getEmail(), passwordEncoder.encode(admDto.getSenha()));
-            return  gerenciadorRepository.save(adm);
-        } else {
-            throw new GerenciadorJaExistenteException("Já existe um Admin cadastrado no sistema");
+        if (!gerenciadoresAdmin.isEmpty()) {
+            throw new GerenciadorJaExistenteException("Já existe um administrador cadastrado no sistema.");
         }
+
+        try {
+            GerenciadorBase adm = new AdminGerenciador(admDto.getNome(), admDto.getEmail(), passwordEncoder.encode(admDto.getSenha()));
+            return gerenciadorRepository.save(adm);
+        } catch (Exception e) {
+            throw new DataBaseException("Erro ao tentar criar o administrador.", e);
+        }
+
 
     }
 
