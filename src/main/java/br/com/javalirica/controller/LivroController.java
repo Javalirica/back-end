@@ -37,10 +37,10 @@ public class LivroController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Livro> adicionarLivro(@RequestBody Livro livro) {
-        livroService.adicionarLivro(livro);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(livro.getId()).toUri();
-        return ResponseEntity.created(uri).body(livro);
+    public ResponseEntity<LivroDto> adicionarLivro(@RequestBody Livro livro) {
+        LivroDto livroDto = livroService.adicionarLivro(livro);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(livroDto.getId()).toUri();
+        return ResponseEntity.created(uri).body(livroDto);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

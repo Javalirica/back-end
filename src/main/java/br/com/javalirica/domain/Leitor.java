@@ -3,6 +3,7 @@ package br.com.javalirica.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Leitor {
 
     @CPF(message = "CPF inválido")
     @NotNull
+    @Column(unique = true, length = 11)
     private final String cpf;
 
     @Email
