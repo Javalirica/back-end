@@ -1,0 +1,11 @@
+INSERT INTO Livro (nome, autor, categoria, disponivel) VALUES ('A Arte da Guerra', 'Sun Tzu', 'Estratégia', true);
+INSERT INTO Livro (nome, autor, categoria, disponivel) VALUES ('A Arte da Guerra', 'Sun Tzu', 'Estratégia', true);
+INSERT INTO Livro (nome, autor, categoria, disponivel) VALUES ('Pai Rico, Pai Pobre', 'Robert Kiyosaki', 'Finanças Pessoais', true);
+INSERT INTO Livro (nome, autor, categoria, disponivel) VALUES ('O Poder do Hábito', 'Charles Duhigg', 'Desenvolvimento Pessoal', true);
+INSERT INTO Livro (nome, autor, categoria, disponivel) VALUES ('Inteligência Emocional', 'Daniel Goleman', 'Psicologia', true);
+INSERT INTO Livro (nome, autor, categoria, disponivel) VALUES ('Os Segredos da Mente Milionária', 'T. Harv Eker', 'Finanças Pessoais', true);
+INSERT INTO Livro (nome, autor, categoria, disponivel) VALUES ('Como Fazer Amigos e Influenciar Pessoas', 'Dale Carnegie', 'Desenvolvimento Pessoal', true);
+INSERT INTO Livro (nome, autor, categoria, disponivel) VALUES ('O Monge e o Executivo', 'James C. Hunter', 'Liderança', true);
+INSERT INTO Livro (nome, autor, categoria, disponivel) VALUES ('Mindset: A Nova Psicologia do Sucesso', 'Carol Dweck', 'Psicologia', true);
+INSERT INTO Livro (nome, autor, categoria, disponivel) VALUES ('A Startup Enxuta', 'Eric Ries', 'Empreendedorismo', true);
+INSERT INTO Livro (nome, autor, categoria, disponivel) VALUES ('Trabalhe 4 Horas por Semana', 'Timothy Ferriss', 'Produtividade', true);
