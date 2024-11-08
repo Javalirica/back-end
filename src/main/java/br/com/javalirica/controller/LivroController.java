@@ -31,9 +31,7 @@ public class LivroController {
     @GetMapping("/nome")
     public ResponseEntity<List<LivroDto>> findByName (@RequestParam String nome){
         List <Livro> livros = livroService.buscarPorNome(nome);
-        livros.stream().forEach( System.out::println);
         List <LivroDto> livrosDto = livros.stream().map(livro -> new LivroDto(livro)).collect(Collectors.toList());
-        livrosDto.stream().forEach( System.out::println);
         return ResponseEntity.ok().body(livrosDto);
     }
 
@@ -46,9 +44,9 @@ public class LivroController {
 //    }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{name}")
-    public ResponseEntity<Void> removerLivro(@PathVariable String nome) {
-        livroService.removerLivro(nome);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> removerLivro(@PathVariable Long id) {
+        livroService.removerLivro(id);
         return ResponseEntity.noContent().build();
     }
 }

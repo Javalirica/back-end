@@ -2,6 +2,7 @@ package br.com.javalirica.service;
 
 import br.com.javalirica.domain.Livro;
 import br.com.javalirica.repository.LivroRepository;
+import br.com.javalirica.service.exception.LivroNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,9 +40,11 @@ public class LivroService {
 //        return null;
 //    }
 
-    public void removerLivro (String nome){
-
-        //Optional<Livro> livro =  livroRepository.findByNome(nome);
-       //livroRepository.delete(livro.get());
+    public void removerLivro (Long id){
+        if (id == null) {
+            throw new NullPointerException("O ID do livro não pode ser nulo");
+        }
+        Livro livro = livroRepository.findById(id).orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado pelo id: " + id));
+        livroRepository.deleteById(livro.getId());
     }
 }
