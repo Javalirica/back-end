@@ -29,8 +29,7 @@ public class GerenciadorService {
     @Transactional
     public GerenciadorBase primeiroAcesso(GerenciadorBaseDTO admDto){
         List<GerenciadorBase>gerenciadoresAdmin = gerenciadorRepository.findAllByRole(Roles.ADMIN);
-        System.out.println(gerenciadoresAdmin);
-        System.out.println("a senha cadastrada do dto" + admDto.getSenha());
+
         if (gerenciadoresAdmin.isEmpty()) {
             GerenciadorBase adm =  new AdminGerenciador(admDto.getNome(),
                     admDto.getEmail(), passwordEncoder.encode(admDto.getSenha()));
@@ -43,6 +42,7 @@ public class GerenciadorService {
 
     @Transactional
     public GerenciadorBase criarGerenciador(GerenciadorBaseDTO gerenciadorBase) {
+
         if (gerenciadorRepository.existsByEmail(gerenciadorBase.getEmail())) {
             throw new GerenciadorJaExistenteException("Usuário já cadastrado");
         }

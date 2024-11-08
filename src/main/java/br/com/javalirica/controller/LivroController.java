@@ -4,11 +4,14 @@ import br.com.javalirica.domain.Livro;
 import br.com.javalirica.dto.LivroDto;
 import br.com.javalirica.service.LivroService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping(value = "/v1/livro")
@@ -26,25 +29,27 @@ public class LivroController {
     }
 
     @GetMapping("/nome")
-    public ResponseEntity<LivroDto> findByName (@RequestBody String nome){
-        Livro livro = livroService.buscarPorNome(nome);
-        LivroDto dto = new LivroDto(livro);
-        return ResponseEntity.ok().body(dto);
+    public ResponseEntity<List<LivroDto>> findByName (@RequestParam String nome){
+        List <Livro> livros = livroService.buscarPorNome(nome);
+        livros.stream().forEach( System.out::println);
+        List <LivroDto> livrosDto = livros.stream().map(livro -> new LivroDto(livro)).collect(Collectors.toList());
+        livrosDto.stream().forEach( System.out::println);
+        return ResponseEntity.ok().body(livrosDto);
     }
 
-    @PostMapping
-    public ResponseEntity<Livro> adicionarLivro(@RequestBody Livro livro) {
-        livroService.adicionarLivro(livro);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(livro.getId()).toUri();
-        return ResponseEntity.created(uri).body(livro);
-    }
+//    @PreAuthorize("hasRole('ADMIN')")
+//    @PostMapping
+//    public ResponseEntity<Livro> adicionarLivro(@RequestBody Livro livro) {
+//        livroService.adicionarLivro(livro);
+//        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(livro.getId()).toUri();
+//        return ResponseEntity.created(uri).body(livro);
+//    }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{name}")
     public ResponseEntity<Void> removerLivro(@PathVariable String nome) {
         livroService.removerLivro(nome);
         return ResponseEntity.noContent().build();
     }
-
 }
-
 
