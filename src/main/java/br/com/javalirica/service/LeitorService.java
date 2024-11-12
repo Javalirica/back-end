@@ -84,12 +84,16 @@ public class LeitorService {
 	}
 
 	private void atualizarDados(Leitor leitor, LeitorDto objDados) {
-		leitor.setNome(objDados.getNome());
+		if (objDados.getNome() != null){
+			leitor.setNome(objDados.getNome());
+		}
 		if (objDados.getEmail() != null && (!objDados.getEmail().equals(leitor.getEmail())) && !leitorRepository.existsByEmail(objDados.getEmail())) {
 			leitor.setEmail(objDados.getEmail());
 		} else if (objDados.getEmail() != null) {
 			throw new EmailJaExisteException("Já existe um usuário com este email");
 		}
-		leitor.setCelular(objDados.getCelular());
+		if (objDados.getCelular()!= null){
+			leitor.setCelular(objDados.getCelular());
+		}
 	}
 }

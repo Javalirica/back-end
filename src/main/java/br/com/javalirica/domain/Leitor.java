@@ -22,7 +22,7 @@ public class Leitor {
     @CPF(message = "CPF inválido")
     @NotNull
     @Column(unique = true, length = 11)
-    private final String cpf;
+    private String cpf;
 
     @Email
     @NotNull
@@ -35,6 +35,9 @@ public class Leitor {
     private List<Emprestimo> livrosAlugados = new ArrayList<>();
 
     private boolean bloqueado;
+
+    public Leitor() {
+    }
 
     public Leitor(String nome, String cpf, String email, String celular) {
         this.nome = nome;
