@@ -1,12 +1,9 @@
 package br.com.javalirica.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.List;
+import java.util.Random;
 
 @Entity
 public class Livro {
@@ -16,12 +13,28 @@ public class Livro {
     private Long id;
     @NotNull
     private String nome;
+
+    @Column(unique = true, length = 5)
+    private String codigoLivro;
+
     @NotNull
     private String autor;
 
     private String categoria;
 
-    private boolean disponivel;
+    private boolean disponivel = true;
+
+
+    public Livro() {
+    }
+
+    public Livro(String nome, String codigoLivro, String autor, String categoria) {
+        this.nome = nome;
+        this.codigoLivro = codigoLivro;
+        this.autor = autor;
+        this.categoria = categoria;
+        this.disponivel = true;
+    }
 
     public Long getId() {
         return id;
@@ -37,6 +50,10 @@ public class Livro {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getCodigoLivro() {
+        return codigoLivro;
     }
 
     public String getAutor() {

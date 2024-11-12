@@ -52,12 +52,13 @@ public class LivroService {
     }
 
     @Transactional
-    public void removerLivro (Long id){
-        if (id == null) {
-            throw new LivroInvalidoException("O ID do livro não pode ser nulo");
+    public void removerLivro (String codigoLivro){
+        if (codigoLivro == null) {
+            throw new LivroInvalidoException("O codigo do livro não pode ser nulo");
         }
         try {
-            Livro livro = livroRepository.findById(id).orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado pelo id: " + id));
+            Livro livro = livroRepository.findByCodigoLivro(codigoLivro).orElseThrow(() ->
+                    new LivroNaoEncontradoException("Livro não encontrado pelo codigo: " + codigoLivro));
             livroRepository.deleteById(livro.getId());
         } catch (DataIntegrityViolationException e ) {
             throw new DataBaseException("Erro ao excluir Livro");

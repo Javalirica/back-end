@@ -1,5 +1,6 @@
 package br.com.javalirica.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -32,6 +33,7 @@ public class Leitor {
     private String celular;
 
     @OneToMany(mappedBy = "leitor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Emprestimo> livrosAlugados = new ArrayList<>();
 
     private boolean bloqueado;

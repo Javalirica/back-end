@@ -36,7 +36,7 @@ public class LivroController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping("/novo")
     public ResponseEntity<LivroDto> adicionarLivro(@RequestBody Livro livro) {
         LivroDto livroDto = livroService.adicionarLivro(livro);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(livroDto.getId()).toUri();
@@ -44,9 +44,9 @@ public class LivroController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> removerLivro(@PathVariable Long id) {
-        livroService.removerLivro(id);
+    @DeleteMapping("/delete/{codigoLivro}")
+    public ResponseEntity<Void> removerLivro(@PathVariable String codigoLivro) {
+        livroService.removerLivro(codigoLivro);
         return ResponseEntity.noContent().build();
     }
 }
