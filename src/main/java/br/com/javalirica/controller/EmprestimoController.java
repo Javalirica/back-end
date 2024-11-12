@@ -1,0 +1,43 @@
+package br.com.javalirica.controller;
+
+import br.com.javalirica.domain.Emprestimo;
+import br.com.javalirica.dto.EmprestimoDto;
+import br.com.javalirica.service.EmprestimoService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequestMapping("/emprestimo")
+public class EmprestimoController {
+
+    private final EmprestimoService emprestimoService;
+
+    public EmprestimoController(EmprestimoService emprestimoService) {
+        this.emprestimoService = emprestimoService;
+    }
+
+    @GetMapping("/todos")
+    public ResponseEntity<List<Emprestimo>> listarTodos(){
+        List<Emprestimo> emprestimos = emprestimoService.consultarTodosEmprestimos();
+        return ResponseEntity.ok().body(emprestimos);
+    }
+
+    @PostMapping("/save")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Emprestimo> emprestarLivro(@RequestBody EmprestimoDto emprestimo) {
+        Emprestimo emprestimoObj = emprestimoService.emprestarLivro(emprestimo);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(emprestimoObj.getId()).toUri();
+        return ResponseEntity.created(uri).body(emprestimoObj);
+    }
+
+//    @PostMapping
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public ResponseEntity<?> finalizarEmprestimo(@RequestBody EmprestimoDto emprestimo){
+//
+//    }
+}
