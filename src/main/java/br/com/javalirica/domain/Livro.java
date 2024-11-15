@@ -15,6 +15,7 @@ public class Livro {
     private String nome;
 
     @Column(unique = true, length = 5)
+    @NotNull
     private String codigoLivro;
 
     @NotNull
@@ -33,7 +34,6 @@ public class Livro {
         this.codigoLivro = codigoLivro;
         this.autor = autor;
         this.categoria = categoria;
-        this.disponivel = true;
     }
 
     public Long getId() {

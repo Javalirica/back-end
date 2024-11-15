@@ -43,7 +43,7 @@ public class AuthService {
 
 		} catch (BadCredentialsException e) {
 			System.out.println("Authentication failed for user: " + username);
-			e.printStackTrace();
+			throw new BadCredentialsException("Email ou senha ivalidos");
 		} catch (IllegalArgumentException e) {
 			System.out.println("Illegal argument provided during authentication: " + e.getMessage());
 			e.printStackTrace();

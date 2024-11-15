@@ -18,11 +18,9 @@ import java.util.UUID;
 public class GerenciadorController {
 
     private final GerenciadorService gerenciadorService;
-    private final JwtUtils jwtUtils;
 
     public GerenciadorController(GerenciadorService gerenciadorService, JwtUtils jwtUtils) {
         this.gerenciadorService = gerenciadorService;
-		this.jwtUtils = jwtUtils;
 	}
 
     @PostMapping("/primeiro")
