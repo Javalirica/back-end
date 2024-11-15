@@ -23,7 +23,7 @@ public class EmprestimoController {
 
     @GetMapping("/todos")
     public ResponseEntity<List<Emprestimo>> listarTodos(){
-        List<Emprestimo> emprestimos = emprestimoService.consultarTodosEmprestimos();
+        List<Emprestimo> emprestimos = emprestimoService.consultarEmprestimosNaoDevolvidos();
         return ResponseEntity.ok().body(emprestimos);
     }
 
@@ -35,9 +35,11 @@ public class EmprestimoController {
         return ResponseEntity.created(uri).body(emprestimoObj);
     }
 
-//    @PostMapping
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public ResponseEntity<?> finalizarEmprestimo(@RequestBody EmprestimoDto emprestimo){
-//
-//    }
+    @PostMapping("/finalizar/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> finalizarEmprestimo(@PathVariable Long id){
+        emprestimoService.registrarDevolucao(id);
+        return ResponseEntity.noContent().build();
+
+    }
 }

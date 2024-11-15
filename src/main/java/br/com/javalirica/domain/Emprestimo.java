@@ -23,16 +23,18 @@ public class Emprestimo {
     private Leitor leitor;
 
     private LocalDate dataDeEmprestimo;
+    private LocalDate dataLimiteEntrega;
     private LocalDate dataDeEntrega;
+    private boolean devolvido = false;
 
     public Emprestimo() {
     }
 
-    public Emprestimo(Livro livro, Leitor leitor, LocalDate dataDeEmprestimo, LocalDate dataDeEntrega) {
+    public Emprestimo(Livro livro, Leitor leitor, LocalDate dataDeEmprestimo, LocalDate dataLimiteEntrega) {
         this.livro = livro;
         this.leitor = leitor;
         this.dataDeEmprestimo = dataDeEmprestimo;
-        this.dataDeEntrega = dataDeEntrega;
+        this.dataLimiteEntrega = dataLimiteEntrega;
     }
 
     public Long getId() {
@@ -67,6 +69,14 @@ public class Emprestimo {
         this.dataDeEmprestimo = dataDeEmprestimo;
     }
 
+    public LocalDate getDataLimiteEntrega() {
+        return dataLimiteEntrega;
+    }
+
+    public void setDataLimiteEntrega(LocalDate dataLimiteEntrega) {
+        this.dataLimiteEntrega = dataLimiteEntrega;
+    }
+
     public LocalDate getDataDeEntrega() {
         return dataDeEntrega;
     }
@@ -75,4 +85,11 @@ public class Emprestimo {
         this.dataDeEntrega = dataDeEntrega;
     }
 
+    public boolean isDevolvido() {
+        return devolvido;
+    }
+
+    public void setDevolvido(boolean devolvido) {
+        this.devolvido = devolvido;
+    }
 }

@@ -8,6 +8,7 @@ import br.com.javalirica.repository.EmprestimoRepository;
 import br.com.javalirica.repository.LeitorRepository;
 import br.com.javalirica.repository.LivroRepository;
 import br.com.javalirica.service.exception.EmprestimoInvalidoException;
+import br.com.javalirica.service.exception.EmprestimoNaoEncontradoException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +29,8 @@ public class EmprestimoService {
         this.leitorRepository = leitorRepository;
     }
 
-    public List<Emprestimo> consultarTodosEmprestimos(){
-
-        return emprestimoRepository.findAll();
+    public List<Emprestimo> consultarEmprestimosNaoDevolvidos() {
+        return emprestimoRepository.findByDevolvidoFalse();
     }
 
     @Transactional
@@ -57,4 +57,23 @@ public class EmprestimoService {
         livroRepository.save(livroObj);
         return emprestimo;
     }
+
+    public void registrarDevolucao(Long id) {
+        Emprestimo emprestimo = emprestimoRepository.findById(id)
+                .orElseThrow(() -> new EmprestimoNaoEncontradoException
+                        ("Empréstimo não encontrado, favor informar um ID de empréstimo válido."));
+
+        if (!emprestimo.isDevolvido()) {
+            emprestimo.setDevolvido(true);
+            emprestimo.setDataDeEntrega(LocalDate.now());
+            Livro livro = emprestimo.getLivro();
+            livro.setDisponivel(true);
+
+            livroRepository.save(livro);
+            emprestimoRepository.save(emprestimo);
+        } else {
+            throw new EmprestimoInvalidoException("Este empréstimo já foi devolvido.");
+        }
+    }
+
 }
