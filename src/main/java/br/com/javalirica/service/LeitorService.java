@@ -57,30 +57,27 @@ public class LeitorService {
 
 	@Transactional
 	public LeitorDto atualizarLeitorPorCpf(String cpf, LeitorDto leitorDto) {
-		Leitor leitorBase = leitorRepository.findByCpf(cpf);
-		if (leitorBase == null) {
-			throw new LeitorNaoEncontradoException("Leitor não encontrado");
-		}
+		Leitor leitorBase = converterDtoParaLeitor(buscarLeitorPorCpf(cpf));
+
 		atualizarDados(leitorBase, leitorDto);
 		leitorRepository.save(leitorBase);
 		return converterParaDto(leitorBase);
 	}
 
 	@Transactional
-	public void deletarLeitorPorCpf(String cpf) {
-		Leitor leitor = leitorRepository.findByCpf(cpf);
-		if (leitor == null) {
-			throw new LeitorNaoEncontradoException("Leitor não encontrado");
-		}
+	public void bloquearLeitorPorCpf(String cpf) {
+		Leitor leitor = converterDtoParaLeitor(buscarLeitorPorCpf(cpf));
+
 		if (!leitor.isBloqueado()) {
-			leitorRepository.delete(leitor);
-		} else {
-			throw new DataBaseException("Usuário não pode ser excluído");
+			leitor.setBloqueado();
 		}
 	}
 
 	private LeitorDto converterParaDto(Leitor leitor) {
 		return new LeitorDto(leitor);
+	}
+	private Leitor converterDtoParaLeitor(LeitorDto leitor) {
+        return leitorRepository.findByCpf(leitor.getCpf());
 	}
 
 	private void atualizarDados(Leitor leitor, LeitorDto objDados) {

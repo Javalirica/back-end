@@ -48,10 +48,10 @@ public class LeitorController {
 		return ResponseEntity.ok().body(leitorUpdate);
 	}
 
-	@DeleteMapping("{cpf}")
+	@PutMapping("/bloquear/{cpf}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<?> deletarLeitor(@PathVariable String cpf){
-		leitorService.deletarLeitorPorCpf(cpf);
+	public ResponseEntity<?> bloquearLeitor(@PathVariable String cpf){
+		leitorService.bloquearLeitorPorCpf(cpf);
 		return ResponseEntity.noContent().build();
 	}
 }
