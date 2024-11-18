@@ -22,10 +22,12 @@ public class GerenciadorService {
 
     private final GerenciadorRepository gerenciadorRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
-    public GerenciadorService(GerenciadorRepository gerenciadorRepository, PasswordEncoder passwordEncoder) {
+    public GerenciadorService(GerenciadorRepository gerenciadorRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.gerenciadorRepository = gerenciadorRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
     @Transactional
     public GerenciadorBase primeiroAcesso(GerenciadorBaseDTO admDto) throws DataBaseException {
@@ -37,7 +39,17 @@ public class GerenciadorService {
 
         try {
             GerenciadorBase adm = new AdminGerenciador(admDto.getNome(), admDto.getEmail(), passwordEncoder.encode(admDto.getSenha()));
-            return gerenciadorRepository.save(adm);
+             gerenciadorRepository.save(adm);
+            emailService.sendEmail(
+                    adm.getEmail(),
+                    "Bem-vindo(a) ao sistema da biblioteca JavaLirica",
+                    "Olá " + adm.getNome() + ",\n\n" +
+                            "Seu cadastro como gerenciador foi realizado com sucesso. Agora você tem acesso às funcionalidades administrativas do sistema da biblioteca.\n\n" +
+                            "Se precisar de ajuda, entre em contato com nossa equipe de suporte.\n\n" +
+                            "Atenciosamente,\n" +
+                            "Equipe da Biblioteca"
+            );
+            return adm;
         } catch (Exception e) {
             throw new DataBaseException("Erro ao tentar criar o administrador.", e);
         }

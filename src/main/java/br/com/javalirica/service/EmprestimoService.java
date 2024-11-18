@@ -7,6 +7,7 @@ import br.com.javalirica.dto.EmprestimoDto;
 import br.com.javalirica.repository.EmprestimoRepository;
 import br.com.javalirica.repository.LeitorRepository;
 import br.com.javalirica.repository.LivroRepository;
+import br.com.javalirica.service.exception.DataBaseException;
 import br.com.javalirica.service.exception.EmprestimoInvalidoException;
 import br.com.javalirica.service.exception.EmprestimoNaoEncontradoException;
 import jakarta.transaction.Transactional;
@@ -22,11 +23,13 @@ public class EmprestimoService {
     private final EmprestimoRepository emprestimoRepository;
     private final LivroRepository livroRepository;
     private final LeitorRepository leitorRepository;
+    private final EmailService emailService;
 
-    public EmprestimoService(EmprestimoRepository emprestimoRepository, LivroRepository livroRepository, LeitorRepository leitorRepository) {
+    public EmprestimoService(EmprestimoRepository emprestimoRepository, LivroRepository livroRepository, LeitorRepository leitorRepository, EmailService emailService) {
         this.emprestimoRepository = emprestimoRepository;
         this.livroRepository = livroRepository;
         this.leitorRepository = leitorRepository;
+        this.emailService = emailService;
     }
 
     public List<Emprestimo> consultarEmprestimosNaoDevolvidos() {
@@ -52,10 +55,25 @@ public class EmprestimoService {
 
         Emprestimo emprestimo = new Emprestimo(livroObj, leitorObj, LocalDate.now(), LocalDate.now().plusMonths(1));
 
-        emprestimoRepository.save(emprestimo);
-        livroObj.setDisponivel(false);
-        livroRepository.save(livroObj);
-        return emprestimo;
+        try {
+            emprestimoRepository.save(emprestimo);
+            livroObj.setDisponivel(false);
+            livroRepository.save(livroObj);
+            emailService.sendEmail(
+                    leitorObj.getEmail(),
+                    "Confirmação de Empréstimo de Livro",
+                    "Olá " + leitorObj.getNome() + ",\n\n" +
+                            "O empréstimo do livro \"" + livroObj.getNome() + "\" foi realizado com sucesso!.\n\n" +
+                            "Por favor, lembre-se de que a devolução deverá ser feita até o dia " +
+                            emprestimo.getDataLimiteEntrega() + ".\n\n" +
+                            "Caso tenha dúvidas ou precise de ajuda, não hesite em nos contatar.\n\n" +
+                            "Atenciosamente,\n" +
+                            "Equipe da Biblioteca"
+            );
+            return emprestimo;
+        } catch (DataBaseException e) {
+            throw new DataBaseException("falha ao registrar emprestimo");
+        }
     }
 
     public void registrarDevolucao(Long id) {
