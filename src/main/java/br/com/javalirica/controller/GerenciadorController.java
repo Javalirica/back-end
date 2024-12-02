@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,7 +22,7 @@ public class GerenciadorController {
 
     public GerenciadorController(GerenciadorService gerenciadorService, JwtUtils jwtUtils) {
         this.gerenciadorService = gerenciadorService;
-	}
+    }
 
     @PostMapping("/primeiro")
     public ResponseEntity<?>primeiroAcesso(@RequestBody GerenciadorBaseDTO gerenciador) {
@@ -34,5 +35,11 @@ public class GerenciadorController {
     public ResponseEntity<?> criarGerenciador(@RequestBody GerenciadorBaseDTO novoGerenciador) {
         GerenciadorBase gerenciadorBaseSalvo = gerenciadorService.criarGerenciador(novoGerenciador);
         return ResponseEntity.status(HttpStatus.CREATED).body(gerenciadorBaseSalvo);
+    }
+
+    @GetMapping("/todos")
+    public ResponseEntity<?> buscarTodos() {
+        List<GerenciadorBase> gerenciadores = gerenciadorService.buscarTodos();
+        return ResponseEntity.ok().body(gerenciadores);
     }
 }

@@ -10,6 +10,7 @@ import br.com.javalirica.repository.LivroRepository;
 import br.com.javalirica.service.exception.DataBaseException;
 import br.com.javalirica.service.exception.EmprestimoInvalidoException;
 import br.com.javalirica.service.exception.EmprestimoNaoEncontradoException;
+import br.com.javalirica.service.exception.LivroNaoEncontradoException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class EmprestimoService {
                 .orElseThrow(() -> new EmprestimoInvalidoException("Leitor não encontrado para o CPF fornecido"));
 
         Livro livroObj = livroRepository.findByCodigoLivro(emprestimoDto.getCodigoLivro())
-                .orElseThrow(() -> new EmprestimoInvalidoException("Livro não encontrado para o ID fornecido"));
+                .orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado para o ID fornecido"));
 
         if (leitorObj.isBloqueado()) {
             throw new EmprestimoInvalidoException("Usuário está bloqueado e não pode pegar livros emprestado");

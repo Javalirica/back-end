@@ -13,9 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class GerenciadorService {
@@ -29,6 +28,10 @@ public class GerenciadorService {
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
     }
+
+    public List<GerenciadorBase> buscarTodos(){
+        return gerenciadorRepository.findAll();
+    }
     @Transactional
     public GerenciadorBase primeiroAcesso(GerenciadorBaseDTO admDto) throws DataBaseException {
         List<GerenciadorBase>gerenciadoresAdmin = gerenciadorRepository.findAllByRole(Roles.ADMIN);
@@ -39,7 +42,7 @@ public class GerenciadorService {
 
         try {
             GerenciadorBase adm = new AdminGerenciador(admDto.getNome(), admDto.getEmail(), passwordEncoder.encode(admDto.getSenha()));
-             gerenciadorRepository.save(adm);
+            gerenciadorRepository.save(adm);
             emailService.sendEmail(
                     adm.getEmail(),
                     "Bem-vindo(a) ao sistema da biblioteca JavaLirica",
@@ -80,5 +83,4 @@ public class GerenciadorService {
         }
     }
 
-    }
-
+}

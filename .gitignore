@@ -34,3 +34,4 @@ build/
 
 #Ignorar arquivos de configuração locais
 application-local.properties
+application-prod.properties

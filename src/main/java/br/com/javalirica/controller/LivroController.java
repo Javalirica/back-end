@@ -34,6 +34,11 @@ public class LivroController {
         List <LivroDto> livrosDto = livros.stream().map(livro -> new LivroDto(livro)).collect(Collectors.toList());
         return ResponseEntity.ok().body(livrosDto);
     }
+    @GetMapping("/todos")
+    public ResponseEntity<?> bucarTodos(){
+        List<Livro> livros = livroService.listarTodos();
+        return ResponseEntity.ok().body(livros);
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/novo")
@@ -50,4 +55,3 @@ public class LivroController {
         return ResponseEntity.noContent().build();
     }
 }
-
