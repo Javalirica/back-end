@@ -26,6 +26,12 @@ public class EmprestimoController {
         List<Emprestimo> emprestimos = emprestimoService.consultarEmprestimosNaoDevolvidos();
         return ResponseEntity.ok().body(emprestimos);
     }
+    @GetMapping("/{cpf}")
+    public ResponseEntity<List<Emprestimo>> buscarEmprestimo(@PathVariable String cpf) {
+        List<Emprestimo> emprestimos = emprestimoService.buscarEmprestimo(cpf);
+        return ResponseEntity.ok().body(emprestimos);
+    }
+
 
     @PostMapping("/save")
     @PreAuthorize("hasRole('ADMIN')")

@@ -7,10 +7,7 @@ import br.com.javalirica.dto.EmprestimoDto;
 import br.com.javalirica.repository.EmprestimoRepository;
 import br.com.javalirica.repository.LeitorRepository;
 import br.com.javalirica.repository.LivroRepository;
-import br.com.javalirica.service.exception.DataBaseException;
-import br.com.javalirica.service.exception.EmprestimoInvalidoException;
-import br.com.javalirica.service.exception.EmprestimoNaoEncontradoException;
-import br.com.javalirica.service.exception.LivroNaoEncontradoException;
+import br.com.javalirica.service.exception.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +32,18 @@ public class EmprestimoService {
 
     public List<Emprestimo> consultarEmprestimosNaoDevolvidos() {
         return emprestimoRepository.findByDevolvidoFalse();
+    }
+
+    public List<Emprestimo> buscarEmprestimo(String cpf) {
+        Leitor leitor = leitorRepository.findByCpf(cpf);
+
+        if (leitor == null) {
+            // Tratar o caso onde o leitor não foi encontrado
+            throw new LeitorNaoEncontradoException("Leitor não encontrado");
+        }
+
+        List<Emprestimo> emprestimos = emprestimoRepository.findEmprestimosNaoDevolvidosPorLeitor(leitor.getId());
+        return emprestimos;
     }
 
     @Transactional
@@ -77,6 +86,7 @@ public class EmprestimoService {
         }
     }
 
+    @Transactional
     public void registrarDevolucao(Long id) {
         Emprestimo emprestimo = emprestimoRepository.findById(id)
                 .orElseThrow(() -> new EmprestimoNaoEncontradoException
