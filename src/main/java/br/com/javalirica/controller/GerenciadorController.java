@@ -1,9 +1,7 @@
 package br.com.javalirica.controller;
 
-import br.com.javalirica.domain.AdminGerenciador;
 import br.com.javalirica.domain.GerenciadorBase;
 import br.com.javalirica.dto.GerenciadorBaseDTO;
-import br.com.javalirica.enums.Roles;
 import br.com.javalirica.security.jtw.JwtUtils;
 import br.com.javalirica.service.GerenciadorService;
 import org.springframework.http.HttpStatus;
@@ -12,7 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/gerenciador")
@@ -41,5 +38,11 @@ public class GerenciadorController {
     public ResponseEntity<?> buscarTodos() {
         List<GerenciadorBase> gerenciadores = gerenciadorService.buscarTodos();
         return ResponseEntity.ok().body(gerenciadores);
+    }
+
+    @GetMapping("/{nome}")
+    public ResponseEntity<?> buscarPorNome(@PathVariable String nome) {
+        GerenciadorBase gerenciador = gerenciadorService.buscarPorNome(nome);
+        return ResponseEntity.ok().body(gerenciador);
     }
 }

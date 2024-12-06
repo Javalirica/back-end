@@ -6,6 +6,7 @@ import br.com.javalirica.domain.SubAdminGerenciador;
 import br.com.javalirica.dto.GerenciadorBaseDTO;
 import br.com.javalirica.enums.Roles;
 import br.com.javalirica.repository.GerenciadorRepository;
+import br.com.javalirica.service.exception.CpfInvalidException;
 import br.com.javalirica.service.exception.DataBaseException;
 import br.com.javalirica.service.exception.GerenciadorJaExistenteException;
 import br.com.javalirica.service.exception.RoleInvalidaException;
@@ -60,6 +61,17 @@ public class GerenciadorService {
 
     }
 
+    public GerenciadorBase buscarPorNome(String nome){
+        if (nome == null || nome.isEmpty()) {
+            throw new NullPointerException("nome inválido ou nulo");
+        }
+        GerenciadorBase gerenciador = gerenciadorRepository.findByNomeContaining(nome.trim());
+        if (gerenciador == null){
+            throw new NullPointerException("Gerenciador não encontrado pelo nome: " + nome);
+        }
+        return gerenciador;
+    }
+
     @Transactional
     public GerenciadorBase criarGerenciador(GerenciadorBaseDTO gerenciadorBase) {
 
@@ -82,5 +94,11 @@ public class GerenciadorService {
                 throw new RoleInvalidaException("Role inválida");
         }
     }
+
+    @Transactional
+    public void alterarSenha(String senha){
+
+    }
+
 
 }

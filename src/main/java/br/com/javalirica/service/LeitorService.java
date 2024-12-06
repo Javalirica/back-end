@@ -34,7 +34,6 @@ public class LeitorService {
 			throw new DataBaseException("Erro ao salvar um novo leitor", e);
 		}
 	}
-
 	public LeitorDto buscarLeitorPorCpf(String cpf) {
 		if (cpf == null || cpf.isEmpty()) {
 			throw new CpfInvalidException("CPF inválido ou nulo");
