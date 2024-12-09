@@ -64,11 +64,17 @@ public class LeitorService {
 	}
 
 	@Transactional
+	public void desbloquearLeitor(String cpf) {
+		Leitor leitorBase = converterDtoParaLeitor(buscarLeitorPorCpf(cpf));
+		leitorBase.setBloqueado(false);
+	}
+
+	@Transactional
 	public void bloquearLeitorPorCpf(String cpf) {
 		Leitor leitor = converterDtoParaLeitor(buscarLeitorPorCpf(cpf));
 
 		if (!leitor.isBloqueado()) {
-			leitor.setBloqueado();
+			leitor.setBloqueado(true);
 		}
 	}
 

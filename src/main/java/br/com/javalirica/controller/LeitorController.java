@@ -54,4 +54,11 @@ public class LeitorController {
 		leitorService.bloquearLeitorPorCpf(cpf);
 		return ResponseEntity.noContent().build();
 	}
+
+	@PutMapping("/desbloquear/{cpf}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<?> desbloquearLeitor(@PathVariable String cpf){
+		leitorService.desbloquearLeitor(cpf);
+		return ResponseEntity.noContent().build();
+	}
 }

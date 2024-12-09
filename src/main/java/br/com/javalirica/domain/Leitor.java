@@ -96,7 +96,7 @@ public class Leitor {
         return bloqueado;
     }
 
-    public void setBloqueado() {
-        this.bloqueado = true;
+    public void setBloqueado(Boolean bloqueado) {
+        this.bloqueado = bloqueado;
     }
 }
