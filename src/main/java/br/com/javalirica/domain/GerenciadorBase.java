@@ -5,10 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(of ="id")
 @Entity
 public abstract class GerenciadorBase {
 
@@ -24,9 +30,6 @@ public abstract class GerenciadorBase {
 
     private  String senha;
 
-    public GerenciadorBase() {
-    }
-
     public GerenciadorBase(String nome, Roles role, String email, String senha) {
         this.nome = nome;
         this.role = role;
@@ -34,35 +37,4 @@ public abstract class GerenciadorBase {
         this.senha = senha;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Roles getRole() {
-        return role;
-    }
-
-    public void setRole(Roles role) {
-        this.role = role;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
 }
