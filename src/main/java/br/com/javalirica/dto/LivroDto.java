@@ -1,10 +1,15 @@
 package br.com.javalirica.dto;
 
 import br.com.javalirica.domain.Livro;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Random;
 
-
+@Getter
+@Setter
+@NoArgsConstructor
 public class LivroDto {
 
     private Long id;
@@ -23,43 +28,4 @@ public class LivroDto {
         this.disponivel = livro.isDisponivel();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCodigoLivro() {
-        return codigoLivro;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public Boolean getDisponivel() {
-        return disponivel;
-    }
-
-    public void setDisponivel(Boolean disponivel) {
-        this.disponivel = disponivel;
-    }
 }

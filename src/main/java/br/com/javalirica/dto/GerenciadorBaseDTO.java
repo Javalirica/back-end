@@ -4,7 +4,13 @@ import br.com.javalirica.domain.GerenciadorBase;
 import br.com.javalirica.enums.Roles;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class GerenciadorBaseDTO {
 
     @NotNull(message = "O nome não pode ser nulo")
@@ -20,9 +26,6 @@ public class GerenciadorBaseDTO {
     @NotNull(message = "A senha não pode ser nula")
     private String senha;
 
-    public GerenciadorBaseDTO() {
-    }
-
     public GerenciadorBaseDTO(GerenciadorBase gerenciador) {
         this.nome = gerenciador.getNome();
         this.role = gerenciador.getRole();
@@ -30,35 +33,4 @@ public class GerenciadorBaseDTO {
         this.senha = gerenciador.getSenha();
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Roles getRole() {
-        return role;
-    }
-
-    public void setRole(Roles role) {
-        this.role = role;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
 }
