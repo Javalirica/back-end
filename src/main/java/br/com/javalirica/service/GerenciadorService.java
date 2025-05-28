@@ -3,10 +3,10 @@ package br.com.javalirica.service;
 import br.com.javalirica.domain.AdminGerenciador;
 import br.com.javalirica.domain.GerenciadorBase;
 import br.com.javalirica.domain.SubAdminGerenciador;
-import br.com.javalirica.dto.GerenciadorBaseDTO;
+import br.com.javalirica.dto.gerenciador.GerenciadorBaseRequestDTO;
+import br.com.javalirica.dto.gerenciador.GerenciadorResponseDTO;
 import br.com.javalirica.enums.Roles;
 import br.com.javalirica.repository.GerenciadorRepository;
-import br.com.javalirica.service.exception.CpfInvalidException;
 import br.com.javalirica.service.exception.DataBaseException;
 import br.com.javalirica.service.exception.GerenciadorJaExistenteException;
 import br.com.javalirica.service.exception.RoleInvalidaException;
@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -30,15 +29,18 @@ public class GerenciadorService {
         this.emailService = emailService;
     }
 
-    public List<GerenciadorBase> buscarTodos(){
-        return gerenciadorRepository.findAll();
+    public List<GerenciadorResponseDTO> buscarTodos(){
+        List<GerenciadorBase> gerenciadoresBase = gerenciadorRepository.findAll();
+        return toListGerenciadoresResponse(gerenciadoresBase);
     }
+    
     @Transactional
-    public GerenciadorBase primeiroAcesso(GerenciadorBaseDTO admDto) throws DataBaseException {
+    public GerenciadorBase primeiroAcesso(GerenciadorBaseRequestDTO admDto) throws DataBaseException {
         List<GerenciadorBase>gerenciadoresAdmin = gerenciadorRepository.findAllByRole(Roles.ADMIN);
 
         if (!gerenciadoresAdmin.isEmpty()) {
-            throw new GerenciadorJaExistenteException("Já existe um administrador cadastrado no sistema.");
+            throw new GerenciadorJaExistenteException("esté não é o primeiro acesso," +
+                    " Já existe um administrador cadastrado no sistema.");
         }
 
         try {
@@ -58,22 +60,22 @@ public class GerenciadorService {
             throw new DataBaseException("Erro ao tentar criar o administrador.", e);
         }
 
-
     }
 
-    public GerenciadorBase buscarPorNome(String nome){
+    public List<GerenciadorResponseDTO> buscarPorNome(String nome){
         if (nome == null || nome.isEmpty()) {
             throw new NullPointerException("nome inválido ou nulo");
         }
-        GerenciadorBase gerenciador = gerenciadorRepository.findByNomeContaining(nome.trim());
+        List<GerenciadorBase> gerenciador = gerenciadorRepository.findByNomeContaining(nome.trim());
         if (gerenciador == null){
             throw new NullPointerException("Gerenciador não encontrado pelo nome: " + nome);
         }
-        return gerenciador;
+
+        return toListGerenciadoresResponse(gerenciador);
     }
 
     @Transactional
-    public GerenciadorBase criarGerenciador(GerenciadorBaseDTO gerenciadorBase) {
+    public GerenciadorBase criarGerenciador(GerenciadorBaseRequestDTO gerenciadorBase) {
 
         if (gerenciadorRepository.existsByEmail(gerenciadorBase.getEmail())) {
             throw new GerenciadorJaExistenteException("Usuário já cadastrado");
@@ -100,5 +102,15 @@ public class GerenciadorService {
 
     }
 
+    // impl mapper posteriormente 
+    private List<GerenciadorResponseDTO> toListGerenciadoresResponse(List<GerenciadorBase> gerenciadorList) {
+        return gerenciadorList.stream()
+                .map(g -> new GerenciadorResponseDTO(g.getNome(), g.getRole(), g.getEmail()))
+                .toList();
+    }
+    
+    private GerenciadorResponseDTO gerenciadorBaseDTO(GerenciadorBase gerenciador){
+        return new GerenciadorResponseDTO(gerenciador.getNome(),gerenciador.getRole(),gerenciador.getEmail());
+    }
 
 }

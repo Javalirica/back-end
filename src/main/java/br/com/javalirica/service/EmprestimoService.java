@@ -3,7 +3,7 @@ package br.com.javalirica.service;
 import br.com.javalirica.domain.Emprestimo;
 import br.com.javalirica.domain.Leitor;
 import br.com.javalirica.domain.Livro;
-import br.com.javalirica.dto.EmprestimoDto;
+import br.com.javalirica.dto.emprestimo.EmprestimoRequestDTO;
 import br.com.javalirica.repository.EmprestimoRepository;
 import br.com.javalirica.repository.LeitorRepository;
 import br.com.javalirica.repository.LivroRepository;
@@ -46,13 +46,14 @@ public class EmprestimoService {
         return emprestimos;
     }
 
+    //Melhorar minha aquitetura dá pra deixar mais legivel
     @Transactional
-    public Emprestimo emprestarLivro(EmprestimoDto emprestimoDto) {
+    public Emprestimo emprestarLivro(EmprestimoRequestDTO emprestimoRequestDTO) {
 
-        Leitor leitorObj = Optional.ofNullable(leitorRepository.findByCpf(emprestimoDto.getCpf()))
+        Leitor leitorObj = Optional.ofNullable(leitorRepository.findByCpf(emprestimoRequestDTO.getCpf()))
                 .orElseThrow(() -> new EmprestimoInvalidoException("Leitor não encontrado para o CPF fornecido"));
 
-        Livro livroObj = livroRepository.findByCodigoLivro(emprestimoDto.getCodigoLivro())
+        Livro livroObj = livroRepository.findByCodigoLivro(emprestimoRequestDTO.getCodigoLivro())
                 .orElseThrow(() -> new LivroNaoEncontradoException("Livro não encontrado para o ID fornecido"));
 
         if (leitorObj.isBloqueado()) {

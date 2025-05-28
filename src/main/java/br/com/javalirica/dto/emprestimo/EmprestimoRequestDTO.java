@@ -1,4 +1,4 @@
-package br.com.javalirica.dto;
+package br.com.javalirica.dto.emprestimo;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

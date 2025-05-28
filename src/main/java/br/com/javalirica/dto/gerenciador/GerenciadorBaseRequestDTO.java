@@ -1,4 +1,4 @@
-package br.com.javalirica.dto;
+package br.com.javalirica.dto.gerenciador;
 
 import br.com.javalirica.domain.GerenciadorBase;
 import br.com.javalirica.enums.Roles;

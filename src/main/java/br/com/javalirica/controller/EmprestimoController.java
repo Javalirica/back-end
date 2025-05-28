@@ -1,7 +1,7 @@
 package br.com.javalirica.controller;
 
 import br.com.javalirica.domain.Emprestimo;
-import br.com.javalirica.dto.EmprestimoDto;
+import br.com.javalirica.dto.emprestimo.EmprestimoRequestDTO;
 import br.com.javalirica.service.EmprestimoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,7 +35,7 @@ public class EmprestimoController {
 
     @PostMapping("/save")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Emprestimo> emprestarLivro(@RequestBody EmprestimoDto emprestimo) {
+    public ResponseEntity<Emprestimo> emprestarLivro(@RequestBody EmprestimoRequestDTO emprestimo) {
         Emprestimo emprestimoObj = emprestimoService.emprestarLivro(emprestimo);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(emprestimoObj.getId()).toUri();
         return ResponseEntity.created(uri).body(emprestimoObj);

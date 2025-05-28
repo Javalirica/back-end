@@ -1,7 +1,7 @@
 package br.com.javalirica.service;
 
 import br.com.javalirica.domain.Livro;
-import br.com.javalirica.dto.LivroDto;
+import br.com.javalirica.dto.livro.LivroDto;
 import br.com.javalirica.repository.LivroRepository;
 import br.com.javalirica.service.exception.DataBaseException;
 import br.com.javalirica.service.exception.LivroInvalidoException;
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LivroService {

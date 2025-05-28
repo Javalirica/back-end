@@ -1,7 +1,6 @@
 package br.com.javalirica.service;
 
 import br.com.javalirica.domain.GerenciadorBase;
-import br.com.javalirica.dto.GerenciadorBaseDTO;
 import br.com.javalirica.enums.Roles;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

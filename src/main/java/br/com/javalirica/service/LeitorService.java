@@ -1,7 +1,7 @@
 package br.com.javalirica.service;
 
 import br.com.javalirica.domain.Leitor;
-import br.com.javalirica.dto.LeitorDto;
+import br.com.javalirica.dto.leitor.LeitorDto;
 import br.com.javalirica.repository.LeitorRepository;
 import br.com.javalirica.service.exception.CpfInvalidException;
 import br.com.javalirica.service.exception.DataBaseException;

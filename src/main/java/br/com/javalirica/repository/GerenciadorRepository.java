@@ -14,5 +14,5 @@ public interface GerenciadorRepository extends JpaRepository<GerenciadorBase, UU
 
     List<GerenciadorBase> findAllByRole(Roles role);
 
-    GerenciadorBase findByNomeContaining(String nome);
+    List<GerenciadorBase> findByNomeContaining(String nome);
 }

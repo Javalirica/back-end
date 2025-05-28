@@ -1,4 +1,4 @@
-package br.com.javalirica.dto;
+package br.com.javalirica.dto.livro;
 
 import br.com.javalirica.domain.Livro;
 import jakarta.validation.constraints.NotNull;

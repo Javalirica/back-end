@@ -1,7 +1,8 @@
 package br.com.javalirica.controller;
 
 import br.com.javalirica.domain.GerenciadorBase;
-import br.com.javalirica.dto.GerenciadorBaseDTO;
+import br.com.javalirica.dto.gerenciador.GerenciadorBaseRequestDTO;
+import br.com.javalirica.dto.gerenciador.GerenciadorResponseDTO;
 import br.com.javalirica.security.jtw.JwtUtils;
 import br.com.javalirica.service.GerenciadorService;
 import org.springframework.http.HttpStatus;
@@ -22,27 +23,27 @@ public class GerenciadorController {
     }
 
     @PostMapping("/primeiro")
-    public ResponseEntity<?>primeiroAcesso(@RequestBody GerenciadorBaseDTO gerenciador) {
+    public ResponseEntity<?>primeiroAcesso(@RequestBody GerenciadorBaseRequestDTO gerenciador) {
         GerenciadorBase gerenciadorSalvo = gerenciadorService.primeiroAcesso(gerenciador);
         return ResponseEntity.status(HttpStatus.CREATED).body(gerenciadorSalvo);
     }
 
     @PostMapping("/novo")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> criarGerenciador(@RequestBody GerenciadorBaseDTO novoGerenciador) {
+    public ResponseEntity<?> criarGerenciador(@RequestBody GerenciadorBaseRequestDTO novoGerenciador) {
         GerenciadorBase gerenciadorBaseSalvo = gerenciadorService.criarGerenciador(novoGerenciador);
         return ResponseEntity.status(HttpStatus.CREATED).body(gerenciadorBaseSalvo);
     }
 
     @GetMapping("/todos")
     public ResponseEntity<?> buscarTodos() {
-        List<GerenciadorBase> gerenciadores = gerenciadorService.buscarTodos();
+        List<GerenciadorResponseDTO> gerenciadores = gerenciadorService.buscarTodos();
         return ResponseEntity.ok().body(gerenciadores);
     }
 
     @GetMapping("/{nome}")
-    public ResponseEntity<?> buscarPorNome(@PathVariable String nome) {
-        GerenciadorBase gerenciador = gerenciadorService.buscarPorNome(nome);
-        return ResponseEntity.ok().body(gerenciador);
+    public ResponseEntity<List<GerenciadorResponseDTO>> buscarPorNome(@PathVariable String nome) {
+        List<GerenciadorResponseDTO> gerenciadorDTO = gerenciadorService.buscarPorNome(nome);
+        return ResponseEntity.ok().body(gerenciadorDTO);
     }
 }

@@ -1,4 +1,4 @@
-package br.com.javalirica.dto;
+package br.com.javalirica.dto.leitor;
 
 import br.com.javalirica.domain.Emprestimo;
 import br.com.javalirica.domain.Leitor;

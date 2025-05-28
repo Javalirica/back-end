@@ -1,7 +1,7 @@
 package br.com.javalirica.controller;
 
 import br.com.javalirica.domain.Livro;
-import br.com.javalirica.dto.LivroDto;
+import br.com.javalirica.dto.livro.LivroDto;
 import br.com.javalirica.service.LivroService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
