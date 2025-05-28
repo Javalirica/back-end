@@ -13,20 +13,15 @@ import java.util.UUID;
 public abstract class GerenciadorBase {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private  UUID id;
 
-    @NotNull
     private  String nome;
 
-    @NotNull
     private  Roles role;
 
-    @Email
-    @NotNull
     private  String email;
 
-    @NotNull
     private  String senha;
 
     public GerenciadorBase() {
