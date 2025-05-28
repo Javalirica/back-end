@@ -20,12 +20,18 @@ public class LeitorDto {
 
     private Long id;
 
+    @NotNull
     private String nome;
 
+    @CPF(message = "CPF inválido")
+    @NotNull
     private  String cpf;
 
+    @Email
+    @NotNull
     private String email;
 
+    @NotNull
     private String celular;
 
     private List<Emprestimo> livrosAlugados = new ArrayList<>();
@@ -34,7 +40,7 @@ public class LeitorDto {
 
 
     public LeitorDto(Leitor leitor) {
-        this.id = leitor.getId();
+
         this.nome = leitor.getNome();
         this.cpf = leitor.getCpf();
         this.email = leitor.getEmail();

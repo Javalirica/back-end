@@ -27,16 +27,11 @@ public class Leitor {
     @NotNull
     private String nome;
 
-    @CPF(message = "CPF inválido")
-    @NotNull
     @Column(unique = true, length = 11)
     private String cpf;
 
-    @Email
-    @NotNull
     private String email;
 
-    @NotNull
     private String celular;
 
     @OneToMany(mappedBy = "leitor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

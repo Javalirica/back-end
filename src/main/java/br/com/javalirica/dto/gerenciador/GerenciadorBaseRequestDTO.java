@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GerenciadorBaseDTO {
+public class GerenciadorBaseRequestDTO {
 
     @NotNull(message = "O nome não pode ser nulo")
     private String nome;
@@ -26,7 +26,7 @@ public class GerenciadorBaseDTO {
     @NotNull(message = "A senha não pode ser nula")
     private String senha;
 
-    public GerenciadorBaseDTO(GerenciadorBase gerenciador) {
+    public GerenciadorBaseRequestDTO(GerenciadorBase gerenciador) {
         this.nome = gerenciador.getNome();
         this.role = gerenciador.getRole();
         this.email = gerenciador.getEmail();

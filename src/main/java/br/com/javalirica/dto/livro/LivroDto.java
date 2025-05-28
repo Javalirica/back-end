@@ -1,6 +1,7 @@
 package br.com.javalirica.dto;
 
 import br.com.javalirica.domain.Livro;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,19 +14,23 @@ import lombok.Setter;
 public class LivroDto {
 
     private Long id;
+
+    @NotNull
     private String autor;
+
+    @NotNull
     private String nome;
+
+    @NotNull
     private String codigoLivro;
     private String categoria;
-    private Boolean disponivel;
 
     public LivroDto(Livro livro) {
-        this.id = livro.getId();
+
         this.autor = livro.getAutor();
         this.nome = livro.getNome();
         this.codigoLivro=livro.getCodigoLivro();
         this.categoria= livro.getCategoria();
-        this.disponivel = livro.isDisponivel();
     }
 
 }

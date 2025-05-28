@@ -20,12 +20,10 @@ public class Emprestimo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "livro_id", nullable = false)
     private Livro livro;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "leitor_id", nullable = false)
     private Leitor leitor;

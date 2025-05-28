@@ -7,13 +7,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class EmprestimoDto {
+public class EmprestimoRequestDTO {
 
     private String cpf;
 
     private String codigoLivro;
 
-    public EmprestimoDto(String cpf, String codigoLivro) {
+    public EmprestimoRequestDTO(String cpf, String codigoLivro) {
         this.cpf = cpf;
         this.codigoLivro = codigoLivro;
     }

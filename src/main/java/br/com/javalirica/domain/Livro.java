@@ -19,18 +19,13 @@ public class Livro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
     private String nome;
 
     @Column(unique = true, length = 5)
-    @NotNull
     private String codigoLivro;
 
-    @NotNull
     private String autor;
-
     private String categoria;
-
     private boolean disponivel = true;
 
     public Livro(String nome, String codigoLivro, String autor, String categoria) {
