@@ -23,20 +23,20 @@ public class GerenciadorController {
     }
 
     @PostMapping("/primeiro")
-    public ResponseEntity<?>primeiroAcesso(@RequestBody GerenciadorBaseRequestDTO gerenciador) {
-        GerenciadorBase gerenciadorSalvo = gerenciadorService.primeiroAcesso(gerenciador);
+    public ResponseEntity<GerenciadorResponseDTO>primeiroAcesso(@RequestBody GerenciadorBaseRequestDTO gerenciador) {
+        GerenciadorResponseDTO gerenciadorSalvo = gerenciadorService.primeiroAcesso(gerenciador);
         return ResponseEntity.status(HttpStatus.CREATED).body(gerenciadorSalvo);
     }
 
     @PostMapping("/novo")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> criarGerenciador(@RequestBody GerenciadorBaseRequestDTO novoGerenciador) {
-        GerenciadorBase gerenciadorBaseSalvo = gerenciadorService.criarGerenciador(novoGerenciador);
+    public ResponseEntity<GerenciadorResponseDTO> criarGerenciador(@RequestBody GerenciadorBaseRequestDTO novoGerenciador) {
+        GerenciadorResponseDTO gerenciadorBaseSalvo = gerenciadorService.criarGerenciador(novoGerenciador);
         return ResponseEntity.status(HttpStatus.CREATED).body(gerenciadorBaseSalvo);
     }
 
     @GetMapping("/todos")
-    public ResponseEntity<?> buscarTodos() {
+    public ResponseEntity<List<GerenciadorResponseDTO>> buscarTodos() {
         List<GerenciadorResponseDTO> gerenciadores = gerenciadorService.buscarTodos();
         return ResponseEntity.ok().body(gerenciadores);
     }

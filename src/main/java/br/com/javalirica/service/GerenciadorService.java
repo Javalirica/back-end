@@ -10,6 +10,7 @@ import br.com.javalirica.repository.GerenciadorRepository;
 import br.com.javalirica.service.exception.DataBaseException;
 import br.com.javalirica.service.exception.GerenciadorJaExistenteException;
 import br.com.javalirica.service.exception.RoleInvalidaException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,17 +36,21 @@ public class GerenciadorService {
     }
     
     @Transactional
-    public GerenciadorBase primeiroAcesso(GerenciadorBaseRequestDTO admDto) throws DataBaseException {
+    public GerenciadorResponseDTO primeiroAcesso(GerenciadorBaseRequestDTO admDto) throws DataBaseException {
         List<GerenciadorBase>gerenciadoresAdmin = gerenciadorRepository.findAllByRole(Roles.ADMIN);
 
+        //Acredito que essa válidação tenha mesmo que está aqui, pois essa validação é apenas do primeiro acesso, caso contrario dê sugestões
         if (!gerenciadoresAdmin.isEmpty()) {
             throw new GerenciadorJaExistenteException("esté não é o primeiro acesso," +
                     " Já existe um administrador cadastrado no sistema.");
         }
 
         try {
+            // Acho que essa linha pode ser refatorando criando um construtor no AdminGerenciador que recebe a superclass GerenciadorBase, o que acha?
             GerenciadorBase adm = new AdminGerenciador(admDto.getNome(), admDto.getEmail(), passwordEncoder.encode(admDto.getSenha()));
             gerenciadorRepository.save(adm);
+
+            //Futuramente impl mensageria, e-mails com demora na requisição (essa parte pode ignorar pois farei posteriormente)
             emailService.sendEmail(
                     adm.getEmail(),
                     "Bem-vindo(a) ao sistema da biblioteca JavaLirica",
@@ -55,8 +60,9 @@ public class GerenciadorService {
                             "Atenciosamente,\n" +
                             "Equipe da Biblioteca"
             );
-            return adm;
-        } catch (Exception e) {
+            return toGerenciadorBaseDTO(adm);
+        } catch (DataAccessException e) {
+            //Acho que posso usar uma exceção mais expecifica
             throw new DataBaseException("Erro ao tentar criar o administrador.", e);
         }
 
@@ -75,23 +81,22 @@ public class GerenciadorService {
     }
 
     @Transactional
-    public GerenciadorBase criarGerenciador(GerenciadorBaseRequestDTO gerenciadorBase) {
+    public GerenciadorResponseDTO criarGerenciador(GerenciadorBaseRequestDTO gerenciadorBase) {
 
         if (gerenciadorRepository.existsByEmail(gerenciadorBase.getEmail())) {
             throw new GerenciadorJaExistenteException("Usuário já cadastrado");
         }
-
         switch (gerenciadorBase.getRole()) {
             case ADMIN:
                 GerenciadorBase gerenciadorAdmin = new AdminGerenciador(gerenciadorBase.getNome(),
                         gerenciadorBase.getEmail(), passwordEncoder.encode(gerenciadorBase.getSenha()));
                 gerenciadorRepository.save(gerenciadorAdmin);
-                return gerenciadorAdmin;
+                return toGerenciadorBaseDTO(gerenciadorAdmin);
             case SUBADMIN:
                 GerenciadorBase gerenciadorSub = new SubAdminGerenciador(gerenciadorBase.getNome(),
                         gerenciadorBase.getEmail(), passwordEncoder.encode(gerenciadorBase.getSenha()));
                 gerenciadorRepository.save(gerenciadorSub);
-                return gerenciadorSub;
+                return toGerenciadorBaseDTO(gerenciadorSub);
             default:
                 throw new RoleInvalidaException("Role inválida");
         }
@@ -108,8 +113,9 @@ public class GerenciadorService {
                 .map(g -> new GerenciadorResponseDTO(g.getNome(), g.getRole(), g.getEmail()))
                 .toList();
     }
-    
-    private GerenciadorResponseDTO gerenciadorBaseDTO(GerenciadorBase gerenciador){
+
+    // impl mapper posteriormente
+    private GerenciadorResponseDTO toGerenciadorBaseDTO(GerenciadorBase gerenciador){
         return new GerenciadorResponseDTO(gerenciador.getNome(),gerenciador.getRole(),gerenciador.getEmail());
     }
 
