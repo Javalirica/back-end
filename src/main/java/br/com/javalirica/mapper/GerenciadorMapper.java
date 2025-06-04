@@ -1,4 +1,4 @@
-package br.com.javalirica.Mapper;
+package br.com.javalirica.mapper;
 
 import br.com.javalirica.domain.AdminGerenciador;
 import br.com.javalirica.domain.GerenciadorBase;

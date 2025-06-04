@@ -1,6 +1,6 @@
 package br.com.javalirica.service;
 
-import br.com.javalirica.Mapper.GerenciadorMapper;
+import br.com.javalirica.mapper.GerenciadorMapper;
 import br.com.javalirica.domain.GerenciadorBase;
 import br.com.javalirica.dto.gerenciador.GerenciadorBaseRequestDTO;
 import br.com.javalirica.dto.gerenciador.GerenciadorResponseDTO;
@@ -48,7 +48,7 @@ public class GerenciadorService {
             gerenciadorRepository.save(adm);
 
             //Futuramente impl mensageria, e-mails com demora na requisição
-            emailService.sendEmail(
+           /* emailService.sendEmail(
                     adm.getEmail(),
                     "Bem-vindo(a) ao sistema da biblioteca JavaLirica",
                     "Olá " + adm.getNome() + ",\n\n" +
@@ -56,7 +56,7 @@ public class GerenciadorService {
                             "Se precisar de ajuda, entre em contato com nossa equipe de suporte.\n\n" +
                             "Atenciosamente,\n" +
                             "Equipe da Biblioteca"
-            );
+            );*/
             return mapper.toResponseDTO(adm);
 
         } catch (DataAccessException e) {

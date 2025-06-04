@@ -1,7 +1,6 @@
-package br.com.javalirica.Mapper;
+package br.com.javalirica.mapper;
 
 import br.com.javalirica.domain.GerenciadorBase;
-import br.com.javalirica.dto.gerenciador.GerenciadorBaseRequestDTO;
 import br.com.javalirica.dto.gerenciador.GerenciadorResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

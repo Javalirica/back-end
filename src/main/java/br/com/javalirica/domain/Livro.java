@@ -21,7 +21,7 @@ public class Livro {
     private Long id;
     private String nome;
 
-    @Column(unique = true, length = 5)
+    @Column(unique = true)
     private String codigoLivro;
 
     private String autor;

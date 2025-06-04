@@ -1,7 +1,9 @@
 package br.com.javalirica.service;
 
+import br.com.javalirica.dto.livro.LivroRequestDTO;
+import br.com.javalirica.mapper.LivroMapper;
 import br.com.javalirica.domain.Livro;
-import br.com.javalirica.dto.livro.LivroDto;
+import br.com.javalirica.dto.livro.LivroResponseDTO;
 import br.com.javalirica.repository.LivroRepository;
 import br.com.javalirica.service.exception.DataBaseException;
 import br.com.javalirica.service.exception.LivroInvalidoException;
@@ -20,29 +22,33 @@ public class LivroService {
     @Autowired
     private LivroRepository livroRepository;
 
-    public List<Livro> listarTodos (){
-        return livroRepository.findAll();
+    @Autowired
+    private LivroMapper mapper;
+
+    public List<LivroResponseDTO> listarTodos (){
+
+        return mapper.toListResponse(livroRepository.findAll());
     }
 
-    public List<Livro> buscarPorNome(String nome) {
+    public List<LivroResponseDTO> buscarPorNome(String nome) {
 
         if (nome == null || nome.trim().isEmpty()) {
             return Collections.emptyList();
         }
 
-        List<Livro> livros = livroRepository.findByNomeContaining(nome.trim());
+        List<LivroResponseDTO> livros = mapper.toListResponse(livroRepository.findByNomeContaining(nome.trim()));
         return livros.isEmpty() ? Collections.emptyList() : livros;
     }
 
     @Transactional
-    public LivroDto adicionarLivro (Livro livro) {
+    public LivroResponseDTO adicionarLivro (LivroRequestDTO livro) {
 
         if (livro == null){
             throw new LivroInvalidoException("O livro não pode ser nulo");
         }
         try {
-             livroRepository.save(livro);
-            return new LivroDto(livro);
+            Livro livroEntity = livroRepository.save(mapper.toEntity(livro));
+            return  mapper.toRespose(livroEntity);
 
         } catch (Exception e) {
             throw  new DataBaseException("Erro ao salvar o livro no banco de dados");
