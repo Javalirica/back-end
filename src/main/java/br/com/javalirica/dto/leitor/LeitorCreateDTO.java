@@ -1,10 +1,10 @@
 package br.com.javalirica.dto.leitor;
 
 import br.com.javalirica.domain.Emprestimo;
-import br.com.javalirica.domain.Leitor;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +16,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class LeitorDto {
+@AllArgsConstructor
+public class LeitorCreateDTO {
 
     private Long id;
 
@@ -28,25 +29,15 @@ public class LeitorDto {
     private  String cpf;
 
     @Email
-    @NotNull
+    @NotNull(message = "e-mail invalido")
     private String email;
 
     @NotNull
-    private String celular;
+    @Size(min = 11, max = 11)
+    private int celular;
 
     private List<Emprestimo> livrosAlugados = new ArrayList<>();
 
     private boolean bloqueado;
-
-
-    public LeitorDto(Leitor leitor) {
-
-        this.nome = leitor.getNome();
-        this.cpf = leitor.getCpf();
-        this.email = leitor.getEmail();
-        this.celular = leitor.getCelular();
-        this.livrosAlugados = leitor.getLivrosAlugados();
-        this.bloqueado = leitor.isBloqueado();
-    }
 
 }

@@ -7,4 +7,6 @@ public interface LeitorRepository extends JpaRepository<Leitor,Long> {
 
     Leitor findByCpf(String cpf);
     boolean existsByEmail(String email);
+    boolean existsByCelular(String celular);
+    boolean existsByCpf(String cpf);
 }
